@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+
+    <title>Chess Game</title>
+    <style>
+
+        body,html{
+            height:100%;
+            perspective: 1000px;
+        }
+
+        body{
+            background: url("images/back.jpg");
+            background-size: 100% 100%;
+        }
+
+        .row_light{
+            float: left;
+            width: 80px;
+            height: 80px;
+            font-size: 18px;
+            color: white;
+
+            background-image: -ms-linear-gradient(top, #C0C0C0 0%, #CDD0D7 100%);
+            background-image: -moz-linear-gradient(top, #C0C0C0 0%, #CDD0D7 100%);
+            background-image: -o-linear-gradient(top, #C0C0C0 0%, #CDD0D7 100%);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C0C0C0), color-stop(100, #CDD0D7));
+            background-image: -webkit-linear-gradient(top, #C0C0C0 0%, #CDD0D7 100%);
+            background-image: linear-gradient(to bottom, #C0C0C0 0%, #CDD0D7 100%);
+            position: relative;
+            overflow: visible;
+            perspective: 1000px;
+
+            border:3px outset #243336;
+            border-width:3px;
+            border-style:outset;
+            border-color:#243336;
+        }
+        .row{
+            float: left;
+            width: 80px;
+            height: 80px;
+            font-size: 18px;
+            color: white;
+            background-image: -ms-radial-gradient(center, ellipse farthest-corner, #4C4646 0%, #271F20 100%);
+            background-image: -moz-radial-gradient(center, ellipse farthest-corner, #4C4646 0%, #271F20 100%);
+            background-image: -o-radial-gradient(center, ellipse farthest-corner, #4C4646 0%, #271F20 100%);
+            background-image: -webkit-gradient(radial, center center, 0, center center, 286, color-stop(0, #4C4646), color-stop(100, #271F20));
+            background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #4C4646 0%, #271F20 100%);
+            background-image: radial-gradient(ellipse farthest-corner at center, #4C4646 0%, #271F20 100%);
+            position: relative;
+            overflow: visible;
+            perspective: 1000px;
+
+            border:3px outset #243336;
+            border-width:3px;
+            border-style:outset;
+            border-color:#243336;
+        }
+
+        .row:hover,.row_light:hover{
+            box-shadow: inset 0px 0px 5px 5px rgb(248, 114, 23);
+        }
+
+        #board{
+            width: 688px;
+            height: 664px;
+            position: absolute;
+            top:-20px;
+            left: 25%;
+            /*border: ridge 30px #B87333;*/
+            transform: rotateX(30deg) skew(2deg) scale(1.06);
+            float: left;
+            overflow: visible;
+
+        }
+
+        img{
+            position: absolute;
+            height: 130px;
+            width: 70px;
+            top:-60px;
+            left:6px;
+            transform: rotateX(-10deg) rotateY(-12deg) rotateZ(-2deg) skew(2deg);
+
+            -webkit-filter: drop-shadow(10px 10px 10px #222);
+            filter:         drop-shadow(10px 10px 10px #222);
+        }
+
+        .white{
+            transform: scale(1);
+        }
+
+        .index_row{
+            float: left;
+            width: 85px;
+            height: 40px;
+            font-size: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        #panel{
+            width: 450px;
+            height:92%;
+            border: solid 2px;
+            position: relative;
+            float: right;
+        }
+
+        .possible_cells{
+            -webkit-box-shadow: inset 0px 0px 5px 5px rgb(59, 156, 156);
+            box-shadow: inset 0px 0px 5px 5px rgb(59, 156, 156);
+        }
+
+        .possible_cells_remove{
+            -webkit-box-shadow: inset 0px 0px 5px 5px rgb(156, 59, 59 );
+            box-shadow: inset 0px 0px 5px 5px rgb(156, 59, 59 );
+        }
+
+        .number{
+            height:85px;
+            width:40px;
+            position: relative;
+            color: white;
+            text-align: center;
+            top:40px;
+            font-size: 20px;
+        }
+
+        #number-container{
+            height: 664px;
+            width: 40px;
+            position: absolute;
+            top:-20px;
+            right:25%;
+            transform: rotateX(30deg) skew(2deg) scale(1.06);
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <audio src="assests/looperman-t-1519763-0188008-thedarkblazerftw-dark-hiphop-rap-2017.mp3" loop autoplay></audio>
+
+    <div id="board">
+
+        <div id="A1" class="row_light">
+            <img src="images/black_rook.png" name="bRook" class="black" alt="bRook1">
+        </div>
+        <div id="B1" class="row">
+            <img src="images/black_knight.png" name="bKnight" class="black" alt="bKnight1">
+        </div>
+        <div id="C1" class="row_light">
+            <img src="images/black_bishop.png" name="bBishop" class="black" alt="bBishop1">
+        </div>
+        <div id="D1" class="row">
+            <img src="images/black_queen.png" name="bQueen" class="black" alt="bQueen">
+        </div>
+        <div id="E1" class="row_light">
+            <img src="images/black_king.png" name="bKing" class="black" alt="bKing">
+        </div>
+        <div id="F1" class="row">
+            <img src="images/black_bishop.png" name="bBishop" class="black" alt="bBishop2">
+        </div>
+        <div id="G1" class="row_light">
+            <img src="images/black_knight.png" name="bKnight" class="black" alt="bKnight2">
+        </div>
+        <div id="H1" class="row">
+            <img src="images/black_rook.png" name="bRook" class="black" alt="bRook2">
+        </div>
+
+        <div id="A2" class="row">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn1">
+        </div>
+        <div id="B2" class="row_light">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn2">
+        </div>
+        <div id="C2" class="row">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn3">
+        </div>
+        <div id="D2" class="row_light">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn4">
+        </div>
+        <div id="E2" class="row">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn5">
+        </div>
+        <div id="F2" class="row_light">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn6">
+        </div>
+        <div id="G2" class="row">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn7">
+        </div>
+        <div id="H2" class="row_light">
+            <img src="images/black_pawn.png" name="bPawn" class="black" alt="bPawn8">
+        </div>
+
+        <div id="A3" class="row_light"></div>
+        <div id="B3" class="row"></div>
+        <div id="C3" class="row_light"></div>
+        <div id="D3" class="row"></div>
+        <div id="E3" class="row_light"></div>
+        <div id="F3" class="row"></div>
+        <div id="G3" class="row_light"></div>
+        <div id="H3" class="row"></div>
+
+        <div id="A4" class="row"></div>
+        <div id="B4" class="row_light"></div>
+        <div id="C4" class="row"></div>
+        <div id="D4" class="row_light"></div>
+        <div id="E4" class="row"></div>
+        <div id="F4" class="row_light"></div>
+        <div id="G4" class="row"></div>
+        <div id="H4" class="row_light"></div>
+
+        <div id="A5" class="row_light"></div>
+        <div id="B5" class="row"></div>
+        <div id="C5" class="row_light"></div>
+        <div id="D5" class="row"></div>
+        <div id="E5" class="row_light"></div>
+        <div id="F5" class="row"></div>
+        <div id="G5" class="row_light"></div>
+        <div id="H5" class="row"></div>
+
+        <div id="A6" class="row"></div>
+        <div id="B6" class="row_light"></div>
+        <div id="C6" class="row"></div>
+        <div id="D6" class="row_light"></div>
+        <div id="E6" class="row"></div>
+        <div id="F6" class="row_light"></div>
+        <div id="G6" class="row"></div>
+        <div id="H6" class="row_light"></div>
+
+        <div id="A7" class="row_light">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn1">
+        </div>
+        <div id="B7" class="row">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn2">
+        </div>
+        <div id="C7" class="row_light">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn3">
+        </div>
+        <div id="D7" class="row">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn4">
+        </div>
+        <div id="E7" class="row_light">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn5">
+        </div>
+        <div id="F7" class="row">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn6">
+        </div>
+        <div id="G7" class="row_light">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn7">
+        </div>
+        <div id="H7" class="row">
+            <img src="images/white_pawn.png" name="wPawn" class="white" alt="wPawn8">
+        </div>
+
+        <div id="A8" class="row">
+            <img src="images/white_rook.png" name="wRook" class="white" alt="wRook1">
+        </div>
+        <div id="B8" class="row_light">
+            <img src="images/white_knight.png" name="wKnight" class="white" alt="wKnight1">
+        </div>
+        <div id="C8" class="row">
+            <img src="images/white_bishop.png" name="wBishop" class="white" alt="wBishop1">
+        </div>
+        <div id="D8" class="row_light">
+            <img src="images/white_queen.png" name="wQueen" class="white" alt="wQueen">
+        </div>
+        <div id="E8" class="row">
+            <img src="images/white_king.png" name="wKing" class="white" alt="wKing">
+        </div>
+        <div id="F8" class="row_light">
+            <img src="images/white_bishop.png" name="wBishop" class="white" alt="wBishop2">
+        </div>
+        <div id="G8" class="row">
+            <img src="images/white_knight.png" name="wKnight" class="white" alt="wKnight2">
+        </div>
+        <div id="H8" class="row_light">
+            <img src="images/white_rook.png" name="wRook" class="white" alt="wRook2">
+        </div>
+
+        <div class="index_row">A</div>
+        <div class="index_row">B</div>
+        <div class="index_row">C</div>
+        <div class="index_row">D</div>
+        <div class="index_row">E</div>
+        <div class="index_row">F</div>
+        <div class="index_row">G</div>
+        <div class="index_row">H</div>
+
+
+    </div>
+
+    <div id="number-container">
+        <div class="number">8</div>
+        <div class="number">7</div>
+        <div class="number">6</div>
+        <div class="number">5</div>
+        <div class="number">4</div>
+        <div class="number">3</div>
+        <div class="number">2</div>
+        <div class="number">1</div>
+    </div>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/chessController.js"></script>
+
+</body>
+</html>
